@@ -1,7 +1,6 @@
 # twitter-monitor
 Twitter Stream monitoring tool
 
-
 ## Start monitoring
 ```php
 $monitor = new \ServiceMonitor\Twitter\UserStreamMonitor(
