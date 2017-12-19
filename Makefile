@@ -3,7 +3,7 @@ MAKEFLAGS += --no-print-directory
 test:
 	@./vendor/bin/phpunit
 stan:
-	@./vendor/bin/phpstan analyse -l 7 -c phpstan.neon src
+	@./vendor/bin/phpstan analyse -l 7 src
 cs:
 	@./vendor/bin/phpcs --standard=PSR2 src
 
