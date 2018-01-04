@@ -13,7 +13,8 @@
     "require": {
         "php":                          ">=7.1",
         "spatie/twitter-streaming-api": "^1.0.0",
-        "howyi/service-monitor":        "~1.0.0"
+        "howyi/service-monitor":        "~1.0.0",
+        "abraham/twitteroauth":         "^0.7.4"
     },
     "autoload": {
         "psr-0": {
