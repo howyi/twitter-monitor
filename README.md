@@ -3,6 +3,8 @@ Twitter Stream monitoring tool
 
 ## Start monitoring
 ```php
+// Return the greeting bot
+
 $monitor = new \ServiceMonitor\Twitter\UserStreamMonitor(
     getenv('TWITTER_ACCESS_TOKEN'),
     getenv('TWITTER_ACCESS_TOKEN_SECRET'),
@@ -10,14 +12,31 @@ $monitor = new \ServiceMonitor\Twitter\UserStreamMonitor(
     getenv('TWITTER_CONSUMER_SECRET')
 );
 
-$event = new class extends \ServiceMonitor\Twitter\TwitterEvent {
-    public function isExecutable(array $value): bool { return true; }
-    // All events execute
+$event = new class extends \ServiceMonitor\Twitter\TwitterEvent
+{
+    public function isExecutable(array $value): bool
+    {
+        if (!isset($value['in_reply_to_user_id_str']) or !isset($value['text'])) {
+            return false;
+        }
+
+        if ($value['in_reply_to_user_id_str'] !== $this->self->id_str) {
+            return false;
+        }
+
+        return (strpos($value['text'], 'hello') !== false);
+    }
 
     public function execute(array $value): void
     {
-        echo("New Event has arrived :)" . PHP_EOL);
-        var_dump($value);
+        echo("User:@{$value['user']['screen_name']} greeted :)" . PHP_EOL);
+
+        $status = "Hello, @{$value['user']['screen_name']} !";
+
+        $this->connection->post(
+            'statuses/update',
+            ['in_reply_to_status_id'=> $value['id_str'], 'status' => $status]
+        );
     }
 };
 
