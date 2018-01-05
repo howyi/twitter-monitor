@@ -31,7 +31,7 @@ class AuthorizeCommand extends Command
 
         $question = new Question('<question>ENTER PIN CODE :</> ');
         $helper = $this->getHelper('question');
-  			$pinCode = $helper->ask($input, $output, $question);
+        $pinCode = $helper->ask($input, $output, $question);
         $output->writeln('');
 
         $accessToken = $connection->oauth(
@@ -39,13 +39,37 @@ class AuthorizeCommand extends Command
             ['oauth_token' => $oauthToken, 'oauth_verifier' => $pinCode]
         );
 
-        $output->writeln(sprintf('<info>USER_ID</info>   : <comment>%s</comment>', $accessToken['user_id']));
-        $output->writeln(sprintf('<info>USER_NAME</info> : <comment>%s</comment>', $accessToken['screen_name']));
+        $output->writeln(
+            sprintf('<info>USER_ID</info>   : <comment>%s</comment>', $accessToken['user_id'])
+        );
+        $output->writeln(
+            sprintf('<info>USER_NAME</info> : <comment>%s</comment>', $accessToken['screen_name'])
+        );
         $output->writeln('');
 
-        $output->writeln(sprintf('<info>TWITTER_ACCESS_TOKEN<info>        : <comment>%s</comment>', $accessToken['oauth_token']));
-        $output->writeln(sprintf('<info>TWITTER_ACCESS_TOKEN_SECRET<info> : <comment>%s</comment>', $accessToken['oauth_token_secret']));
-        $output->writeln(sprintf('<info>TWITTER_CONSUMER_KEY<info>        : <comment>%s</comment>', getenv('TWITTER_CONSUMER_KEY')));
-        $output->writeln(sprintf('<info>TWITTER_CONSUMER_SECRET<info>     : <comment>%s</comment>', getenv('TWITTER_CONSUMER_SECRET')));
+        $output->writeln(
+            sprintf(
+                '<info>TWITTER_ACCESS_TOKEN<info>        : <comment>%s</comment>',
+                $accessToken['oauth_token']
+            )
+        );
+        $output->writeln(
+            sprintf(
+                '<info>TWITTER_ACCESS_TOKEN_SECRET<info> : <comment>%s</comment>',
+                $accessToken['oauth_token_secret']
+            )
+        );
+        $output->writeln(
+            sprintf(
+                '<info>TWITTER_CONSUMER_KEY<info>        : <comment>%s</comment>',
+                getenv('TWITTER_CONSUMER_KEY')
+            )
+        );
+        $output->writeln(
+            sprintf(
+                '<info>TWITTER_CONSUMER_SECRET<info>     : <comment>%s</comment>',
+                getenv('TWITTER_CONSUMER_SECRET')
+            )
+        );
     }
 }
