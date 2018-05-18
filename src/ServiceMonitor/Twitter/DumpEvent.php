@@ -8,7 +8,7 @@ class DumpEvent extends TwitterEvent
 {
     public function isExecutable(array $value): bool
     {
-        return $value;
+        return true;
     }
 
     public function execute(array $value): void
