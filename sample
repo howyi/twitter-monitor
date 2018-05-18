@@ -6,12 +6,14 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require __DIR__ . '/../../autoload.php';
 }
 
-$monitor = new \ServiceMonitor\Twitter\UserStreamMonitor(
+$monitor = new \ServiceMonitor\Twitter\SearchStreamMonitor(
     getenv('TWITTER_ACCESS_TOKEN'),
     getenv('TWITTER_ACCESS_TOKEN_SECRET'),
     getenv('TWITTER_CONSUMER_KEY'),
-    getenv('TWITTER_CONSUMER_SECRET')
+    getenv('TWITTER_CONSUMER_SECRET'),
+    'tgif'
 );
-$monitor->setEvent(new \ServiceMonitor\Twitter\SampleEvent());
+$monitor->setEvent(new \ServiceMonitor\Twitter\DumpEvent());
+// $monitor->setEvent(new \ServiceMonitor\Twitter\SampleEvent());
 echo 'Start monitoring.' . PHP_EOL;
 $monitor->start();

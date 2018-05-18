@@ -4,25 +4,28 @@ namespace ServiceMonitor\Twitter;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use ServiceMonitor\Monitor;
-use Spatie\TwitterStreamingApi\UserStream;
+use Spatie\TwitterStreamingApi\PublicStream;
 
-class UserStreamMonitor extends Monitor
+class SearchStreamMonitor extends Monitor
 {
     private $accessToken;
     private $accessTokenSecret;
     private $consumerKey;
     private $consumerSecret;
+    private $needle;
 
     public function __construct(
         string $accessToken,
         string $accessTokenSecret,
         string $consumerKey,
-        string $consumerSecret
+        string $consumerSecret,
+        $needle
     ) {
         $this->accessToken = $accessToken;
         $this->accessTokenSecret = $accessTokenSecret;
         $this->consumerKey = $consumerKey;
         $this->consumerSecret = $consumerSecret;
+        $this->needle = $needle;
     }
 
     public function start(): void
@@ -40,13 +43,13 @@ class UserStreamMonitor extends Monitor
             $event->set($connection, $self);
         }
 
-        $stream = new UserStream(
+        $stream = new PublicStream(
             $this->accessToken,
             $this->accessTokenSecret,
             $this->consumerKey,
             $this->consumerSecret
         );
-        $stream->onEvent(function (array $event) {
+        $stream->whenHears($this->needle, function (array $event) {
             $this->execute($event);
         })
         ->startListening();
